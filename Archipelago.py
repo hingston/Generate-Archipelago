@@ -1,6 +1,4 @@
-"""Removes all unnecessary lines from .po files.
-
-Created by William Hingston on 10/10/2019.
+"""Created by William Hingston on 10/10/2019.
 
 See:
     $ python Archipelago.py -h
