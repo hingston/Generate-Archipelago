@@ -18,7 +18,6 @@ Please write some code to read in an N * N grid of Boolean numbers, and count th
 ```
   -h, --help              Show this help message and exit.
   --n N                   Used to create an N * N grid of pixels. Must be greater than 0.
-  --height HEIGHT         Height of the map in pixels. Must be greater than 0.
   --weathering WEATHERING The weathering of the islands. Must be between 1 and 5, where 1 is most weathered
                           (smoother edges) and 5 is least weathered (rougher edges).
   --sea_level SEA_LEVEL   The sea level. Must be between -1 and 1, where -1 is all land and 1 is all water.
