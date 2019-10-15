@@ -24,9 +24,7 @@ class Archipelago:
     def __init__(self, n: int = 1000, seed: int = 0, sea_level: float = 0, weathering: int = 5):
         """Inits Archipelago class and checks values are within the acceptable limits."""
         if n <= 0:
-            raise ValueError(
-                "n must be greater than 0. n = {0}".format(n)
-            )
+            raise ValueError("n must be greater than 0. n = {0}".format(n))
         if not 0 <= seed <= int("0xFFFF", 16):
             raise ValueError("Seed must be between 0 and {0}. seed = {1}".format(int("0xFFFF", 16), seed))
         if not -1 <= sea_level <= 1:
