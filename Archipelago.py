@@ -17,25 +17,38 @@ class Archipelago:
 
     Generates an archipelago based on a seed, sea level and weathering with the option to count the number of islands.
     """
+
     PERSISTENCE = 0.5
     LACUNARITY = 2.0
     BASE = 0
 
-    def __init__(self, n: int = 1000, seed: int = 0, sea_level: float = 0, weathering: int = 5):
+    def __init__(
+        self, n: int = 1000, seed: int = 0, sea_level: float = 0, weathering: int = 5
+    ):
         """Inits Archipelago class and checks values are within the acceptable limits."""
         if n <= 0:
             raise ValueError("n must be greater than 0. n = {0}".format(n))
         if not 0 <= seed <= int("0xFFFF", 16):
-            raise ValueError("Seed must be between 0 and {0}. seed = {1}".format(int("0xFFFF", 16), seed))
+            raise ValueError(
+                "Seed must be between 0 and {0}. seed = {1}".format(
+                    int("0xFFFF", 16), seed
+                )
+            )
         if not -1 <= sea_level <= 1:
-            raise ValueError("Sea level must be between -1 and 1. sea_level = {0}".format(sea_level))
+            raise ValueError(
+                "Sea level must be between -1 and 1. sea_level = {0}".format(sea_level)
+            )
         if not 1 <= weathering <= 5:
-            raise ValueError("Weathering must be between 1 and 5. weathering = {0}".format(weathering))
+            raise ValueError(
+                "Weathering must be between 1 and 5. weathering = {0}".format(
+                    weathering
+                )
+            )
         self.n = n
         self.seed = seed
         self.sea_level = sea_level
         self.weathering = weathering
-        self.map = Image.new('1', (self.n, self.n))
+        self.map = Image.new("1", (self.n, self.n))
         self.pixels = None
         self.num_islands = 0
         self.counted = False
@@ -65,11 +78,10 @@ class Archipelago:
                     self.LACUNARITY,
                     self.n,
                     self.n,
-                    self.BASE
+                    self.BASE,
                 )
                 distance_to_center = math.sqrt(
-                    math.pow((x - half_n), 2) +
-                    math.pow((y - half_n), 2)
+                    math.pow((x - half_n), 2) + math.pow((y - half_n), 2)
                 )
                 pixel_value -= math.pow(distance_to_center / max_distance, 4)
                 self.pixels[x, y] = pixel_value > 0.01 + self.sea_level
@@ -80,7 +92,7 @@ class Archipelago:
         file_name = "w{0}sl{1:+.2f}.png".format(self.weathering, self.sea_level)
         if not os.path.exists(directory):
             os.makedirs(directory)
-        ImageOps.invert(self.map.convert('L')).convert('1').save(directory + file_name)
+        ImageOps.invert(self.map.convert("L")).convert("1").save(directory + file_name)
 
     def append_if(self, queue, x, y):
         """Append to queue if pixel at position x and y is 1 and within the bounds of n * n."""
@@ -129,24 +141,41 @@ def test(seed=0, weathering=5, sea_level=0, n=1000):
     islands = Archipelago(seed=seed, weathering=weathering, sea_level=sea_level, n=n)
     num_islands = islands.get_num_islands
     islands.save_map()
-    print("Seed: {0}, Weathering: {1}, Sea level: {2:+.2f}, Number of islands: {3}".format(
-        seed,
-        weathering,
-        sea_level,
-        num_islands)
+    print(
+        "Seed: {0}, Weathering: {1}, Sea level: {2:+.2f}, Number of islands: {3}".format(
+            seed, weathering, sea_level, num_islands
+        )
     )
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("$ python Archipelago.py",
-                                     description="Generates an archipelago based on a seed, sea level and weathering with the option to count the number of islands.")
-    parser.add_argument("--n", default=1000, type=int,
-                        help="Used to create an N * N grid of pixels. Must be greater than 0.")
-    parser.add_argument("--weathering", default=5, type=int,
-                        help="The weathering of the islands. Must be between 1 and 5, where 1 is most weathered (smoother edges) and 5 is least weathered (rougher edges).")
-    parser.add_argument("--sea_level", default=0, type=float,
-                        help="The sea level. Must be between -1 and 1, where -1 is all land and 1 is all water.")
-    parser.add_argument("--seed", default=0, type=int,
-                        help="The seed the islands are generated from. Must be between 0 and 65535.")
+    parser = argparse.ArgumentParser(
+        "$ python Archipelago.py",
+        description="Generates an archipelago based on a seed, sea level and weathering with the option to count the number of islands.",
+    )
+    parser.add_argument(
+        "--n",
+        default=1000,
+        type=int,
+        help="Used to create an N * N grid of pixels. Must be greater than 0.",
+    )
+    parser.add_argument(
+        "--weathering",
+        default=5,
+        type=int,
+        help="The weathering of the islands. Must be between 1 and 5, where 1 is most weathered (smoother edges) and 5 is least weathered (rougher edges).",
+    )
+    parser.add_argument(
+        "--sea_level",
+        default=0,
+        type=float,
+        help="The sea level. Must be between -1 and 1, where -1 is all land and 1 is all water.",
+    )
+    parser.add_argument(
+        "--seed",
+        default=0,
+        type=int,
+        help="The seed the islands are generated from. Must be between 0 and 65535.",
+    )
     args = parser.parse_args()
     test(args.seed, args.weathering, args.sea_level, args.n)
